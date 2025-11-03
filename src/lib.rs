@@ -35,7 +35,7 @@ impl RollingHash {
         let hash_r = self.hash[r];
         let hash_l = self.hash[l];
         let len = r - l;
-        (self.modulo + hash_r - hash_l * self.pow[len] % self.modulo) % self.modulo
+        (self.modulo + hash_r - (hash_l * self.pow[len] % self.modulo)) % self.modulo
     }
 }
 
