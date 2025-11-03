@@ -1,3 +1,25 @@
+/// Update a value if the new value is greater than the current value.
+///
+/// # Arguments
+///
+/// * `value` - A mutable reference to the value to potentially update
+/// * `new_value` - The new value to compare and potentially assign
+///
+/// # Returns
+///
+/// Returns `true` if the value was updated, `false` otherwise.
+///
+/// # Examples
+///
+/// ```
+/// use omochi_gyuhi_atcoder::chmax;
+///
+/// let mut x = 5;
+/// assert_eq!(chmax(&mut x, 10), true);
+/// assert_eq!(x, 10);
+/// assert_eq!(chmax(&mut x, 3), false);
+/// assert_eq!(x, 10);
+/// ```
 pub fn chmax<T: PartialOrd>(value: &mut T, new_value: T) -> bool {
     if *value < new_value {
         *value = new_value;
@@ -7,6 +29,28 @@ pub fn chmax<T: PartialOrd>(value: &mut T, new_value: T) -> bool {
     }
 }
 
+/// Update a value if the new value is smaller than the current value.
+///
+/// # Arguments
+///
+/// * `value` - A mutable reference to the value to potentially update
+/// * `new_value` - The new value to compare and potentially assign
+///
+/// # Returns
+///
+/// Returns `true` if the value was updated, `false` otherwise.
+///
+/// # Examples
+///
+/// ```
+/// use omochi_gyuhi_atcoder::chmin;
+///
+/// let mut x = 10;
+/// assert_eq!(chmin(&mut x, 5), true);
+/// assert_eq!(x, 5);
+/// assert_eq!(chmin(&mut x, 8), false);
+/// assert_eq!(x, 5);
+/// ```
 pub fn chmin<T: PartialOrd>(value: &mut T, new_value: T) -> bool {
     if *value > new_value {
         *value = new_value;
