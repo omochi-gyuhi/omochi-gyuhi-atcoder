@@ -1,0 +1,72 @@
+{
+	// Place your snippets for rust here. Each snippet is defined under a snippet name and has a prefix, body and 
+	// description. The prefix is what is used to trigger the snippet and the body will be expanded and inserted. Possible variables are:
+	// $1, $2 for tab stops, $0 for the final cursor position, and ${1:label}, ${2:another} for placeholders. Placeholders with the 
+	// same ids are connected.
+	// Example:
+	// "Print to console": {
+	// 	"prefix": "log",
+	// 	"body": [
+	// 		"console.log('$1');",
+	// 		"$2"
+	// 	],
+	// 	"description": "Log output to console"
+	// }
+	"LazySegtree with Affine Transform": {
+		"prefix": "lazy_affine",
+		"body": [
+			"use ac_library::*;",
+			"use ac_library::ModInt998244353 as Mint;",
+			"use ac_library::{MapMonoid, Monoid};",
+			"",
+			"// 区間和を管理するモノイド：(合計値, 要素数)",
+			"struct RangeSum;",
+			"",
+			"impl Monoid for RangeSum {",
+			"    type S = (Mint, usize);",
+			"    ",
+			"    fn identity() -> Self::S {",
+			"        (Mint::new(0), 0)",
+			"    }",
+			"    ",
+			"    fn binary_operation(left: &Self::S, right: &Self::S) -> Self::S {",
+			"        (left.0 + right.0, left.1 + right.1)",
+			"    }",
+			"}",
+			"",
+			"// アフィン変換 f(x) = ax + b",
+			"struct AffineTransform;",
+			"",
+			"impl MapMonoid for AffineTransform {",
+			"    type M = RangeSum;",
+			"    type F = (Mint, Mint); // (a, b) で f(x) = ax + b",
+			"    ",
+			"    fn identity_map() -> Self::F {",
+			"        (Mint::new(1), Mint::new(0))",
+			"    }",
+			"    ",
+			"    fn mapping(transform: &Self::F, range_data: &<Self::M as Monoid>::S) -> <Self::M as Monoid>::S {",
+			"        let (a, b) = transform;",
+			"        let (sum, count) = range_data;",
+			"        // f(x) = ax + b を区間に適用",
+			"        // sum' = a * sum + b * count",
+			"        (*a * *sum + *b * Mint::new(*count), *count)",
+			"    }",
+			"    ",
+			"    fn composition(f: &Self::F, g: &Self::F) -> Self::F {",
+			"        let (a1, b1) = f;",
+			"        let (a2, b2) = g;",
+			"        // f(g(x)) = a1 * (a2 * x + b2) + b1",
+			"        //         = (a1 * a2) * x + (a1 * b2 + b1)",
+			"        (*a1 * *a2, *a1 * *b2 + *b1)",
+			"    }",
+			"}",
+			"",
+			"// 使用例",
+			"// let mut lazy_seg = LazySegtree::<AffineTransform>::new(n);",
+			"// lazy_seg.apply_range(l..r, (Mint::new(a), Mint::new(b))); // 区間 [l, r) に f(x) = ax + b を適用",
+			"// let (sum, count) = lazy_seg.prod(l..r); // 区間 [l, r) の合計値を取得"
+		],
+		"description": "LazySegtree with Affine Transform for range sum queries"
+	}
+}
